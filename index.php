@@ -111,6 +111,23 @@
 
             });
         }
+
+        // delete user
+        function deleteUser(deleteId){
+            $.ajax({
+                url:"delete.php",
+                type: "POST",
+                data:{
+                    deleteSend: deleteId
+                },
+                success:function(data, status){
+                    displayData();
+                }
+
+            });
+        }
+
+        // update user
     </script>
     
 </body>
