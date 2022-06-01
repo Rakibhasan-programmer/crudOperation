@@ -39,7 +39,7 @@
                 </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-dark" data-bs-dismiss="modal">Submit</button>
+            <button type="submit" class="btn btn-dark" data-bs-dismiss="modal" onclick="adduser()">Submit</button>
             <button type="button" class="btn btn-danger">Close</button>
         </div>
         </div>
@@ -49,9 +49,12 @@
     <div class="container">
         <h1 class="fw-bold text-center py-5">PHP CRUD OPERATION USING MODAL</h1>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#completeModal">
+        <button type="button" class="btn btn-dark mb-5" data-bs-toggle="modal" data-bs-target="#completeModal">
          Add new user
         </button>
+        <div id="displayDataTable">
+
+        </div>
    </div>
 
 
@@ -59,8 +62,56 @@
 
 
 
+   <!-- jquer cdn  -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js
     "></script>
+
+    <script>
+        $(document).ready(function (){
+            displayData();
+        });
+        // displaying data
+        function displayData(){
+            let displayData = true;
+            $.ajax({
+                url: "display.php",
+                type: "POST",
+                data:{
+                    displaySend: displayData
+                },
+                success:function(data, status){
+                    $("#displayDataTable").html(data);
+                }
+            })
+        }
+
+
+        // adding user
+        function adduser(){
+            let addName = $('#completename').val();
+            let addEmail = $('#completemail').val();
+            let addMobile = $('#completemobile').val();
+            let addPlace = $('#completeplace').val();
+
+            $.ajax({
+                url:"insert.php",
+                type: "POST",
+                data:{
+                    sendName: addName,
+                    sendEmail: addEmail,
+                    sendMobile: addMobile,
+                    sendPlace: addPlace
+                },
+                success:function(data, status){
+                    // function to display data
+                    // console.log(status);
+                    displayData();
+                }
+
+            });
+        }
+    </script>
     
 </body>
 </html>
