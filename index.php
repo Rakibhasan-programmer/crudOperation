@@ -46,6 +46,41 @@
     </div>
     </div>
 
+    <!-- Update Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title fw-bold" id="exampleModalLabel">Update User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="updatename" placeholder="Enter your name" name="name">
+                    <label for="completename">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="updatemail" placeholder="Enter your email" name="email">
+                    <label for="completemail">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="updatemobile" placeholder="Enter your number" name="mobile">
+                    <label for="completemobile">Mobile</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="updateplace" placeholder="Enter your Place" name="password">
+                    <label for="completeplace">Place</label>
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-dark" data-bs-dismiss="modal" onclick="updateDetails()">Update</button>
+            <button type="button" class="btn btn-danger">Close</button>
+            <input type="hidden" id="hiddendata">
+        </div>
+        </div>
+    </div>
+    </div>
+
     <div class="container">
         <h1 class="fw-bold text-center py-5">PHP CRUD OPERATION USING MODAL</h1>
         <!-- Button trigger modal -->
@@ -106,6 +141,7 @@
                 success:function(data, status){
                     // function to display data
                     // console.log(status);
+                    $("#completeModal").modal("hide");
                     displayData();
                 }
 
@@ -127,7 +163,44 @@
             });
         }
 
-        // update user
+        // display user in update page
+        function updateUser(updateid){
+            $("#hiddendata").val(updateid);
+
+            $.post("update.php", {updateid:updateid}, function(data, status){
+                var userid = JSON.parse(data);
+                // console.log(userid);
+                $('#updatename').val(userid.name);
+                $('#updatemail').val(userid.email);
+                $('#updatemobile').val(userid.mobile);
+                $('#updateplace').val(userid.place);
+            });
+
+            $("#updateModal").modal("show");
+        }
+
+        // update details
+        function updateDetails(){
+
+            let updatename = $('#updatename').val();
+            let updatemail = $('#updatemail').val();
+            let updatemobile = $('#updatemobile').val();
+            let updateplace = $('#updateplace').val();
+            let hiddendata = $('#hiddendata').val();
+
+            console.log(hiddendata);
+
+            $.post("update.php", {
+                updatename: updatename,
+                updatemail: updatemail,
+                updatemobile: updatemobile,
+                updateplace: updateplace,
+                hiddendata: hiddendata
+            },function(data, status){
+                $("#updateModal").modal("hide");
+                displayData();
+            });
+        }
     </script>
     
 </body>
